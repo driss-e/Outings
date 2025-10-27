@@ -1,0 +1,36 @@
+
+@if (activity()) {
+  @let act = activity();
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl dark:hover:shadow-gray-700 transition-shadow duration-300 ease-in-out group">
+    <div class="relative">
+      <img class="h-48 w-full object-cover" [src]="act.imageUrl" [alt]="act.title">
+      <div class="absolute top-0 right-0 bg-teal-600 text-white px-3 py-1 text-sm font-semibold rounded-bl-lg">
+        {{ act.category }}
+      </div>
+    </div>
+    <div class="p-6">
+      <h3 class="text-xl font-bold text-gray-900 dark:text-white truncate group-hover:text-teal-600 dark:group-hover:text-teal-500 transition-colors duration-300">{{ act.title }}</h3>
+      <div class="mt-2 text-sm text-gray-500 dark:text-gray-400 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400 dark:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ act.location }}</span>
+      </div>
+      <div class="mt-1 text-sm text-gray-500 dark:text-gray-400 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400 dark:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ act.date }}</span>
+      </div>
+      <div class="mt-4 flex justify-between items-center">
+        <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400 dark:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0110 14.07a3 3 0 11-6 0 5 5 0 011.58-3.74A6.97 6.97 0 004 16c0 .34.024.673.07 1h8.86zM17.5 16a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0z" />
+          </svg>
+          <span>{{ act.participants }} / {{ act.maxParticipants }} going</span>
+        </div>
+        <a [routerLink]="['/activity', act.id]" class="text-sm font-semibold text-teal-600 hover:text-teal-800 dark:text-teal-500 dark:hover:text-teal-400">View Details &rarr;</a>
+      </div>
+    </div>
+  </div>
+}

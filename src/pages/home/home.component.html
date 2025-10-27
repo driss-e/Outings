@@ -1,0 +1,61 @@
+
+<div class="space-y-12">
+  <!-- Hero Section -->
+  <section class="text-center bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+      Discover Your Next <span class="text-teal-600 dark:text-teal-500">Adventure</span>
+    </h1>
+    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-400">
+      Browse local cafés, concerts, trips, and more. Find your community and make new memories.
+    </p>
+  </section>
+
+  <!-- Search and Filters -->
+  <section class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+      <div class="lg:col-span-2">
+        <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Search Activity or Location</label>
+        <div class="mt-1 relative rounded-md shadow-sm">
+           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <input type="text" id="search" [value]="searchTerm()" (input)="onSearch($event)" placeholder="e.g. 'Indie Rock Fest' or 'Downtown'" class="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+        </div>
+      </div>
+      <div>
+        <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+        <select id="category" name="category" [(ngModel)]="selectedCategory" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          @for (category of categories(); track category) {
+            <option>{{ category }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
+        <input type="date" id="date" name="date" [(ngModel)]="selectedDate" class="mt-1 focus:ring-teal-500 focus:border-teal-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      </div>
+    </div>
+  </section>
+
+  <!-- Activities Grid -->
+  <section>
+    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">Upcoming Activities</h2>
+    @if (filteredActivities().length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @for (activity of filteredActivities(); track activity.id) {
+          <app-activity-card [activity]="activity"></app-activity-card>
+        }
+      </div>
+    } @else {
+      <div class="text-center py-16 px-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2-2H5a2 2 0 01-2-2z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No activities found</h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria.</p>
+      </div>
+    }
+  </section>
+</div>
