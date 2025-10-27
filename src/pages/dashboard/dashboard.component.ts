@@ -1,49 +1,51 @@
-
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
-import { Activity, Review, User } from '../../models/activity.model';
 import { ActivityService } from '../../services/activity.service';
+import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { ActivityDetailsComponent } from '../activity-details/activity-details.component';
+import { Review } from '../../models/activity.model';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule]
+  imports: [CommonModule, ActivityCardComponent, RouterLink, ReactiveFormsModule, ActivityDetailsComponent]
 })
 export class DashboardComponent {
   private activityService = inject(ActivityService);
 
-  // Mock data for the dashboard
-  currentUser = signal<User>({
-    id: 1,
-    name: 'Alice',
-    avatarUrl: 'https://picsum.photos/seed/user1/200'
+  activeTab = signal<'activities' | 'profile' | 'reviews'>('activities');
+  animationDirection = signal<'left' | 'right'>('right');
+
+  // For demonstration, we'll just show the first two activities as "my activities"
+  myActivities = computed(() => this.activityService.activities$().slice(0, 2));
+
+  // Placeholder for reviews
+  myReviews = computed(() => {
+    return this.activityService.activities$()
+      .flatMap(a => a.reviews.map(r => ({ ...r, activityTitle: a.title })))
+      .slice(0, 3);
   });
   
-  registeredActivities = signal<Activity[]>([
-    this.activityService.getActivityById(1)!,
-    this.activityService.getActivityById(3)!
-  ]);
-
-  myReviews = signal<Review[]>([
-     this.activityService.getActivityById(1)!.reviews.find(r => r.user.id === 1)!
-  ]);
-
-  activeTab = signal<'activities' | 'profile' | 'reviews'>('activities');
-  
   profileForm = new FormGroup({
-    name: new FormControl(this.currentUser().name),
-    email: new FormControl('alice@example.com') // mock email
+    name: new FormControl('Demo User'),
+    email: new FormControl('demo@example.com'),
   });
 
   setTab(tab: 'activities' | 'profile' | 'reviews') {
-    this.activeTab.set(tab);
-  }
+    const tabOrder = ['activities', 'profile', 'reviews'];
+    const currentTabIndex = tabOrder.indexOf(this.activeTab());
+    const newTabIndex = tabOrder.indexOf(tab);
 
-  onProfileUpdate() {
-    console.log('Profile updated:', this.profileForm.value);
+    if (newTabIndex > currentTabIndex) {
+      this.animationDirection.set('right');
+    } else if (newTabIndex < currentTabIndex) {
+      this.animationDirection.set('left');
+    }
+
+    this.activeTab.set(tab);
   }
 
   getStarArray(rating: number): boolean[] {

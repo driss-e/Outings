@@ -1,13 +1,12 @@
-
 import { Component, ChangeDetectionStrategy, signal, effect, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink]
+  imports: [RouterLink, RouterLinkActive]
 })
 export class HeaderComponent {
   isMenuOpen = signal(false);
